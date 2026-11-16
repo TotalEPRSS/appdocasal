@@ -7,12 +7,15 @@
     
     <!-- Ícone da Aba do Navegador (Favicon do Casal) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👩‍❤️‍👨</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%23FF6584%22/><text x=%2250%25%22 y=%2254%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2265%22>👩‍❤️‍👨</text></svg>">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#FF6584">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="App Casal">
+    <link id="pwaManifestLink" rel="manifest">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -162,6 +165,13 @@
         .app-brand i { font-size: 24px; color: var(--primary); background: var(--primary-light); padding: 10px; border-radius: 12px; }
         .app-brand h1 { font-size: 18px; font-weight: 700; color: var(--text-color); }
         .app-brand span { font-size: 11px; color: var(--gray); display: block; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .header-icon-btn {
+            font-size: 15px; padding: 8px; background: var(--light); border: 1px solid var(--border);
+            color: var(--text-color); border-radius: 50%; width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition);
+        }
+        .header-icon-btn.active-privacy { background: var(--secondary-light); color: var(--secondary); border-color: var(--secondary); }
         .container { padding: 16px; }
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
@@ -222,6 +232,8 @@
         .btn-secondary { background: var(--secondary); box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2); }
         .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); box-shadow: none; }
         .btn-qr { background: linear-gradient(135deg, #6C63FF, #8A85FF); box-shadow: 0 4px 12px rgba(108, 99, 255, 0.25); color: white; }
+        .btn-repor { background: var(--warning-light); color: #B7950B; border: 1px solid var(--warning); box-shadow: none; padding: 6px 10px; font-size: 11px; width: auto; border-radius: 8px; }
+        .btn-repor.ja-na-lista { background: var(--info-light); color: var(--info); border-color: var(--info); }
         .btn-sm { padding: 8px 12px; font-size: 12px; width: auto; }
 
         .badge { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
@@ -234,19 +246,24 @@
 
         .item-list { display: flex; flex-direction: column; gap: 10px; }
         .list-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow); }
-        .list-card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .list-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
         .list-card-title { font-size: 14px; font-weight: 700; color: var(--text-color); }
         .list-card-details { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--gray); border-top: 1px dashed var(--border); padding-top: 6px; }
-        .action-icon-group { display: flex; gap: 8px; }
+        .action-icon-group { display: flex; gap: 8px; align-items: center; }
         .icon-btn { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--gray); padding: 4px; }
         .icon-btn.check:hover { color: var(--success); }
         .icon-btn.delete:hover { color: var(--danger); }
         .icon-btn.edit:hover { color: var(--info); }
 
+        .qty-stepper { display: inline-flex; align-items: center; gap: 6px; background: var(--light); border: 1px solid var(--border); border-radius: 8px; padding: 2px 6px; }
+        .qty-stepper button { background: none; border: none; color: var(--text-color); font-weight: 700; font-size: 14px; width: 22px; height: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-stepper span { font-size: 12px; font-weight: 700; min-width: 18px; text-align: center; }
+
         .filter-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scrollbar-width: none; }
         .filter-chips::-webkit-scrollbar { display: none; }
         .chip { background: var(--bg-card); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; color: var(--text-color); font-weight: 500; }
         .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .chip.chip-despensa.active { background: var(--secondary); border-color: var(--secondary); }
 
         .progress-container { width: 100%; background: var(--gray-light); border-radius: 10px; height: 8px; overflow: hidden; margin: 6px 0; }
         .progress-bar { height: 100%; background: var(--success); border-radius: 10px; transition: width 0.5s ease; }
@@ -302,7 +319,10 @@
             </div>
         </div>
         <div class="header-actions">
-            <button onclick="toggleDarkMode()" class="icon-btn" id="darkModeBtn" title="Alternar Modo Escuro" style="font-size: 16px; padding: 8px; background: var(--light); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+            <button onclick="togglePrivacidade()" class="header-icon-btn" id="privacyBtn" title="Ocultar / Mostrar Valores">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+            <button onclick="toggleDarkMode()" class="header-icon-btn" id="darkModeBtn" title="Alternar Modo Escuro">
                 <i class="fa-solid fa-moon"></i>
             </button>
         </div>
@@ -369,10 +389,10 @@
             </div>
         </section>
 
-        <!-- ABA 2: CASA COM LEITOR DE QR CODE -->
+        <!-- ABA 2: CASA COM LEITOR DE QR CODE E DESPENSA -->
         <section id="tab-casa" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: gap; gap: 8px;">
-                <h2 style="font-size: 16px; font-weight: 700;"><i class="fa-solid fa-couch"></i> Itens & Necessidades</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                <h2 style="font-size: 16px; font-weight: 700;"><i class="fa-solid fa-couch"></i> Itens & Despensa</h2>
                 <div style="display: flex; gap: 6px;">
                     <button class="btn btn-qr btn-sm" onclick="abrirModalScannerQR()" title="Ler cupom ou lista via QR Code">
                         <i class="fa-solid fa-qrcode"></i> Ler QR Code
@@ -385,6 +405,7 @@
 
             <div class="filter-chips" id="casaFilterChips">
                 <div class="chip active" onclick="filterCasa('todos', this)">Todos</div>
+                <div class="chip chip-despensa" onclick="filterCasa('Despensa', this)">📦 Despensa</div>
                 <div class="chip" onclick="filterCasa('Mercado', this)">🛒 Mercado</div>
                 <div class="chip" onclick="filterCasa('Cozinha', this)">🍳 Cozinha</div>
                 <div class="chip" onclick="filterCasa('Quarto', this)">🛏️ Quarto</div>
@@ -452,6 +473,11 @@
                     <input type="text" id="inputApiPythonUrl" placeholder="https://api-nfe-casal.onrender.com" onchange="salvarConfigApi(this.value)">
                     <span style="font-size: 10px; color: var(--gray);">Deixe em branco para usar a rota padrão do Render.</span>
                 </div>
+
+                <button id="btnInstalarPWA" class="btn" style="display: none; margin-bottom: 8px; background: linear-gradient(135deg, #FF6584, #6C63FF);" onclick="instalarAppPWA()">
+                    <i class="fa-solid fa-mobile-screen-button"></i> Instalar App na Tela Inicial
+                </button>
+
                 <button class="btn btn-secondary" onclick="exportarDados()"><i class="fa-solid fa-download"></i> Backup JSON</button>
                 <button class="btn btn-outline" style="margin-top: 8px; border-color: var(--danger); color: var(--danger);" onclick="resetarDados()"><i class="fa-solid fa-trash-can"></i> Limpar Geral (App e Nuvem)</button>
             </div>
@@ -517,7 +543,7 @@
                 <button class="icon-btn" onclick="closeModal('modalColarTexto')"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <p style="font-size: 12px; color: var(--gray); margin-bottom: 8px;">
-                Cole aqui as linhas copiadas da SEFAZ. Todos os itens irão automaticamente para <b>Mercado</b>:
+                Cole aqui as linhas copiadas da SEFAZ. Todos os itens irão para <b>Mercado</b> e para a <b>Despensa</b>:
             </p>
             <textarea id="txtManualFazenda" rows="8" placeholder="BAT PALHA YOKI 105G (Código: 1136513)&#10;Qtde.:2   UN: Un   Vl. Unit.:   5,99&#10;11,98..."></textarea>
             <button class="btn" style="margin-top: 10px;" onclick="processarTextoManualColado()">
@@ -550,7 +576,7 @@
             </div>
 
             <button class="btn" onclick="confirmarImportacaoItensQR()">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Importar Todos para Casa
+                <i class="fa-solid fa-cloud-arrow-up"></i> Importar Todos para Casa e Despensa
             </button>
         </div>
     </div>
@@ -603,7 +629,7 @@
         </div>
     </div>
 
-    <!-- Modal Nova Conta (Alinhado com as 5 Categorias do Orçamento) -->
+    <!-- Modal Nova Conta -->
     <div class="modal-overlay" id="modalConta">
         <div class="modal-content">
             <div class="modal-header">
@@ -649,7 +675,7 @@
         </div>
     </div>
 
-    <!-- Modal Rendas (Apenas Dia 20 + Extras) -->
+    <!-- Modal Rendas -->
     <div class="modal-overlay" id="modalRenda">
         <div class="modal-content">
             <div class="modal-header">
@@ -736,16 +762,19 @@
 
         window.dbRef = db;
         window.docRef = doc(db, "dados", "app_casal");
+        window.setDocRef = setDoc;
 
         window.appData = {
             nomeP1: 'Jhonatan',
             nomeP2: 'Thayna',
             darkMode: false,
+            modoPrivacidade: false,
             apiPythonUrl: '',
             mesReferencia: new Date().getMonth(),
             renda: { p1_20: 493.00, p2_20: 0, extra: 0 },
             orcamento: { Casa: 300, Mercado: 600, 'Contas Fixas': 500, Lazer: 200, Tecnologia: 100 },
             itensCasa: [],
+            despensa: [],
             contas: [],
             objetivos: [],
             atividades: []
@@ -759,10 +788,11 @@
 
         onSnapshot(window.docRef, (docSnap) => {
             if (docSnap.exists() && docSnap.data().nomeP1) {
-                window.appData = docSnap.data();
+                window.appData = { ...window.appData, ...docSnap.data() };
+                if (!Array.isArray(window.appData.despensa)) window.appData.despensa = [];
             } else {
                 const saved = localStorage.getItem('app_casal_data_v1');
-                if (saved) { try { window.appData = JSON.parse(saved); } catch(e) {} }
+                if (saved) { try { window.appData = { ...window.appData, ...JSON.parse(saved) }; } catch(e) {} }
                 window.salvarDados();
             }
             sincronizarConfigNomes();
@@ -784,6 +814,79 @@
     </script>
 
     <script>
+        // --- CONFIGURAÇÃO PWA (MANIFEST DINÂMICO + SERVICE WORKER) ---
+        let deferredInstallPrompt = null;
+
+        (function initPWA() {
+            const manifest = {
+                name: "App Casal - Organização e Finanças",
+                short_name: "App Casal",
+                description: "Organização financeira, compras e despensa do casal",
+                start_url: window.location.href,
+                display: "standalone",
+                background_color: "#F4F7F6",
+                theme_color: "#FF6584",
+                orientation: "portrait",
+                icons: [
+                    {
+                        src: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22><rect width=%22192%22 height=%22192%22 rx=%2242%22 fill=%22%23FF6584%22/><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%22120%22>👩‍❤️‍👨</text></svg>",
+                        sizes: "192x192",
+                        type: "image/svg+xml",
+                        purpose: "any maskable"
+                    },
+                    {
+                        src: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 rx=%22110%22 fill=%22%23FF6584%22/><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%22320%22>👩‍❤️‍👨</text></svg>",
+                        sizes: "512x512",
+                        type: "image/svg+xml",
+                        purpose: "any maskable"
+                    }
+                ]
+            };
+
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            const linkEl = document.getElementById('pwaManifestLink');
+            if (linkEl) linkEl.setAttribute('href', manifestUrl);
+
+            if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
+                const swCode = `
+                    const CACHE_NAME = 'app-casal-v1';
+                    self.addEventListener('install', (e) => {
+                        self.skipWaiting();
+                    });
+                    self.addEventListener('activate', (e) => {
+                        e.waitUntil(clients.claim());
+                    });
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(
+                            fetch(e.request).catch(() => caches.match(e.request))
+                        );
+                    });
+                `;
+                const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(swBlob);
+                navigator.serviceWorker.register(swUrl).catch(() => {});
+            }
+        })();
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            const btnInstall = document.getElementById('btnInstalarPWA');
+            if (btnInstall) btnInstall.style.display = 'flex';
+        });
+
+        window.instalarAppPWA = async function() {
+            if (!deferredInstallPrompt) return;
+            deferredInstallPrompt.prompt();
+            const { outcome } = await deferredInstallPrompt.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('btnInstalarPWA').style.display = 'none';
+            }
+            deferredInstallPrompt = null;
+        };
+
+        // --- VARIÁVEIS GLOBAIS ---
         let editMetaId = null;
         let editItemCasaId = null;
         let html5QrScanner = null;
@@ -808,12 +911,6 @@
             }, 250);
         };
 
-        function normalizarCategoria(cat) { 
-            const comodos = ['Cozinha', 'Quarto', 'Banheiro', 'Sala', 'Lavanderia']; 
-            if (comodos.includes(cat)) return 'Casa'; 
-            return cat; 
-        }
-
         window.aplicar50Porcento = function(inputId) {
             let elem = document.getElementById(inputId); 
             let val = parseFloat(elem.value);
@@ -837,11 +934,98 @@
             salvarDados();
         };
 
+        window.togglePrivacidade = function() {
+            appData.modoPrivacidade = !appData.modoPrivacidade;
+            atualizarBotaoPrivacidade();
+            salvarDados();
+        };
+
+        function atualizarBotaoPrivacidade() {
+            const btn = document.getElementById('privacyBtn');
+            if (!btn) return;
+            if (appData.modoPrivacidade) {
+                btn.classList.add('active-privacy');
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                btn.classList.remove('active-privacy');
+                btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        }
+
         window.atualizarNomeP1 = function(val) { appData.nomeP1 = val; salvarDados(); };
         window.atualizarNomeP2 = function(val) { appData.nomeP2 = val; salvarDados(); };
         window.salvarConfigApi = function(val) { appData.apiPythonUrl = val.trim(); salvarDados(); };
 
-        // CÁLCULO FINANCEIRO CORRIGIDO (Soma os dois parceiros no dia 20 + extras)
+        // --- LÓGICA DA DESPENSA / ESTOQUE DE CASA ---
+        function limparNomeProduto(nome) {
+            return nome.replace(/^\d+x\s*/i, '').trim();
+        }
+
+        function abastecerDespensa(nomeRaw, qtdAdicionar, valorUnitario) {
+            if (!Array.isArray(appData.despensa)) appData.despensa = [];
+            let nomeLimpo = limparNomeProduto(nomeRaw);
+            if (!nomeLimpo) return;
+
+            let chave = nomeLimpo.toUpperCase();
+            let existente = appData.despensa.find(d => d.nome.toUpperCase() === chave);
+
+            if (existente) {
+                existente.quantidade = (parseInt(existente.quantidade) || 0) + (parseInt(qtdAdicionar) || 1);
+                if (valorUnitario > 0) existente.ultimoValorUnit = parseFloat(valorUnitario.toFixed(2));
+                existente.atualizadoEm = new Date().toLocaleDateString('pt-BR');
+            } else {
+                appData.despensa.unshift({
+                    id: Date.now() + Math.floor(Math.random() * 1000),
+                    nome: nomeLimpo,
+                    quantidade: parseInt(qtdAdicionar) || 1,
+                    ultimoValorUnit: valorUnitario > 0 ? parseFloat(valorUnitario.toFixed(2)) : 0,
+                    atualizadoEm: new Date().toLocaleDateString('pt-BR')
+                });
+            }
+        }
+
+        window.alterarQtdDespensa = function(id, delta) {
+            let item = appData.despensa.find(d => d.id === id);
+            if (!item) return;
+            item.quantidade = Math.max(0, (parseInt(item.quantidade) || 0) + delta);
+            item.atualizadoEm = new Date().toLocaleDateString('pt-BR');
+            salvarDados();
+        };
+
+        window.reporItemDespensa = function(id) {
+            let item = appData.despensa.find(d => d.id === id);
+            if (!item) return;
+
+            let chave = item.nome.toUpperCase();
+            let jaPendente = appData.itensCasa.some(i => i.status === 'Pendente' && limparNomeProduto(i.nome).toUpperCase() === chave);
+
+            if (jaPendente) {
+                alert(`"${item.nome}" já está na lista de compras pendentes!`);
+                return;
+            }
+
+            item.quantidade = 0;
+            item.atualizadoEm = new Date().toLocaleDateString('pt-BR');
+
+            appData.itensCasa.unshift({
+                id: Date.now(),
+                nome: item.nome,
+                quantidade: 1,
+                categoria: 'Mercado',
+                status: 'Pendente',
+                valorReal: item.ultimoValorUnit || 0
+            });
+
+            registrarAtividade(`Despensa: "${item.nome}" acabou e foi para a lista de compras`);
+            salvarDados();
+        };
+
+        window.excluirItemDespensa = function(id) {
+            appData.despensa = appData.despensa.filter(d => d.id !== id);
+            salvarDados();
+        };
+
+        // --- CÁLCULO FINANCEIRO ---
         function calcularFinancas() {
             let r = appData.renda;
             let rendaTotal = (parseFloat(r.p1_20) || 0) + (parseFloat(r.p2_20) || 0) + (parseFloat(r.extra) || 0);
@@ -868,7 +1052,7 @@
                     if (c.recorrente) {
                         c.status = 'pendente';
                         if (c.vencimento) { 
-                            let d = new Date(c.vencimento); 
+                            let d = new Date(c.vencimento + 'T12:00:00'); 
                             d.setMonth(d.getMonth() + 1); 
                             c.vencimento = d.toISOString().split('T')[0]; 
                         }
@@ -876,7 +1060,7 @@
                 });
                 appData.itensCasa = appData.itensCasa.filter(i => i.status !== 'Comprado');
                 appData.mesReferencia = mesAtualReal;
-                registrarAtividade(`🔄 Mês virou! Sobra de ${formatarMoeda(sobraDoMesPassado)} repassada.`);
+                registrarAtividade(`🔄 Mês virou! Sobra de ${formatarMoedaBruta(sobraDoMesPassado)} repassada.`);
                 salvarDados();
             }
         }
@@ -918,6 +1102,7 @@
             }
 
             if (appData.darkMode) document.body.classList.add('dark-mode');
+            atualizarBotaoPrivacidade();
             renderizarItensCasa(); 
             renderizarContas(); 
             renderizarOrcamento(); 
@@ -925,11 +1110,7 @@
             renderizarAtividades();
         };
 
-        // --- SCANNER E PARSER (FORÇANDO 100% PARA MERCADO) ---
-        function deduzirCategoria(nome) {
-            return 'Mercado';
-        }
-
+        // --- SCANNER E PARSER ---
         function parseQrText(rawText) {
             let items = [];
             let lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
@@ -938,7 +1119,6 @@
             while (i < lines.length) {
                 let line = lines[i];
 
-                // Padrão PIPE ultraleve: Qtd|Total|Nome
                 if (line.includes('|')) {
                     let p = line.split('|');
                     if (p.length >= 3) {
@@ -956,7 +1136,6 @@
                     }
                 }
 
-                // Padrão 1: TSV Compacto (qtd \t valor \t categoria \t nome)
                 if (line.includes('\t')) {
                     let p = line.split('\t');
                     if (p.length >= 4) {
@@ -971,7 +1150,6 @@
                     }
                 }
 
-                // Padrão 2: Bloco impresso da Fazenda (Nome na linha i-1, Qtde na linha i, Total na linha i+1)
                 let regexQtde = /Qtde\.?:\s*([0-9.,]+).*?Vl\.?\s*Unit\.?:\s*([0-9.,]+)/i;
                 if (regexQtde.test(line)) {
                     let nome = (i > 0) ? lines[i - 1].replace(/\(Código.*?\)/i, '').trim() : "Item Desconhecido";
@@ -994,7 +1172,6 @@
                         categoria: 'Mercado'
                     });
                 } else if (/^([0-9]+)x\s+(.*?)\s*-\s*R\$\s*([0-9.,]+)/i.test(line)) {
-                    // Padrão 3: Linha simples (16x TRENTO 29G - R$ 39,84)
                     let m = line.match(/^([0-9]+)x\s+(.*?)\s*-\s*R\$\s*([0-9.,]+)/i);
                     let qtd = parseInt(m[1]) || 1;
                     let nome = m[2].trim();
@@ -1009,7 +1186,6 @@
                 i++;
             }
 
-            // Agrupa itens repetidos somando quantidade e valor total
             let mapa = new Map();
             items.forEach(it => {
                 let key = it.nome.toUpperCase();
@@ -1082,7 +1258,6 @@
             pararScannerCamera();
             closeModal('modalScannerQR');
 
-            // 1. Se for um link direto para JSON na nuvem
             if (decodedText.includes("npoint.io") || decodedText.endsWith(".json")) {
                 try {
                     const resp = await fetch(decodedText);
@@ -1103,7 +1278,6 @@
                 }
             }
 
-            // 2. Se for link oficial da Fazenda/SEFAZ
             if (decodedText.startsWith("http://") || decodedText.startsWith("https://")) {
                 let urlBaseApi = (appData.apiPythonUrl || "https://api-nfe-casal.onrender.com").trim();
                 if (urlBaseApi.endsWith("/")) urlBaseApi = urlBaseApi.slice(0, -1);
@@ -1148,7 +1322,6 @@
                 }
             }
 
-            // 3. Se for texto puro ou lista compacta
             let itens = parseQrText(decodedText);
             
             if (itens.length === 0) {
@@ -1208,7 +1381,7 @@
                 row.innerHTML = `
                     <div>
                         <div style="font-weight: 700; color: var(--text-color);">${item.quantidade}x ${item.nome}</div>
-                        <span style="color: var(--gray); font-size: 11px;"><i class="fa-solid fa-tag"></i> Mercado</span>
+                        <span style="color: var(--gray); font-size: 11px;"><i class="fa-solid fa-tag"></i> Mercado + Despensa</span>
                     </div>
                     <div style="text-align: right;">
                         <span style="font-weight: 700; color: var(--text-color);">${formatarMoeda(item.valorTotal)}</span>
@@ -1233,25 +1406,30 @@
 
             itensDetectadosTemp.forEach((it, index) => {
                 totalImportado += it.valorTotal;
-                let nomeFormatado = it.quantidade > 1 ? `${it.quantidade}x ${it.nome.replace(/^\d+x\s*/i, '')}` : it.nome;
+                let qtdItem = it.quantidade || 1;
+                let nomeFormatado = qtdItem > 1 ? `${qtdItem}x ${limparNomeProduto(it.nome)}` : limparNomeProduto(it.nome);
+                
                 appData.itensCasa.unshift({
                     id: agora + index,
                     nome: nomeFormatado,
-                    quantidade: it.quantidade || 1,
+                    quantidade: qtdItem,
                     categoria: 'Mercado',
                     status: 'Comprado',
                     valorReal: parseFloat(it.valorTotal.toFixed(2))
                 });
+
+                // Alimenta automaticamente a Despensa
+                abastecerDespensa(it.nome, qtdItem, it.valorTotal / qtdItem);
             });
 
-            registrarAtividade(`Importação: ${itensDetectadosTemp.length} itens lançados em Mercado — ${formatarMoeda(totalImportado)}`);
+            registrarAtividade(`Importação: ${itensDetectadosTemp.length} itens lançados em Mercado & Despensa`);
             salvarDados();
             closeModal('modalRevisaoQR');
 
             confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
         };
 
-        // --- ABA CASA: RENDER, CÁLCULO E EDIÇÃO COM QUANTIDADE ---
+        // --- ABA CASA: RENDER, DESPENSA, CÁLCULO E EDIÇÃO ---
         let filtroCasaAtual = 'todos';
         window.filterCasa = function(cat, el) { 
             filtroCasaAtual = cat; 
@@ -1263,6 +1441,12 @@
         function renderizarItensCasa() {
             let container = document.getElementById('casaListContainer'); 
             container.innerHTML = '';
+
+            if (filtroCasaAtual === 'Despensa') {
+                renderizarDespensa(container);
+                return;
+            }
+
             let list = appData.itensCasa; 
             if (filtroCasaAtual !== 'todos') list = list.filter(i => i.categoria === filtroCasaAtual);
             if (list.length === 0) { 
@@ -1283,6 +1467,7 @@
                     <div class="list-card-details">
                         <span><i class="fa-solid fa-tag"></i> ${item.categoria}</span>
                         <div class="action-icon-group">
+                            ${item.status !== 'Comprado' ? `<button class="icon-btn check" title="Marcar como Comprado" onclick="marcarItemComprado(${item.id})"><i class="fa-solid fa-check"></i></button>` : ''}
                             <button class="icon-btn edit" onclick="editarItemCasa(${item.id})"><i class="fa-solid fa-pen"></i></button>
                             <button class="icon-btn delete" onclick="excluirItem(${item.id})"><i class="fa-solid fa-trash"></i></button>
                         </div>
@@ -1291,6 +1476,62 @@
                 container.appendChild(card);
             });
         }
+
+        function renderizarDespensa(container) {
+            let estoque = appData.despensa || [];
+            if (estoque.length === 0) {
+                container.innerHTML = `<div class="empty-state">Sua despensa ainda está vazia.<br>Escaneie um cupom de mercado via QR Code ou cadastre itens comprados em Mercado para preencher automaticamente!</div>`;
+                return;
+            }
+
+            estoque.forEach(item => {
+                let qtd = parseInt(item.quantidade) || 0;
+                let acabando = qtd <= 1;
+                let jaNaLista = appData.itensCasa.some(i => i.status === 'Pendente' && limparNomeProduto(i.nome).toUpperCase() === item.nome.toUpperCase());
+
+                let statusBadge = qtd === 0
+                    ? `<span class="badge badge-urgent">Acabou</span>`
+                    : (qtd === 1 ? `<span class="badge badge-important">Último</span>` : `<span class="badge badge-waiting">Em Estoque</span>`);
+
+                let card = document.createElement('div');
+                card.className = 'list-card';
+                card.innerHTML = `
+                    <div class="list-card-header">
+                        <div>
+                            ${statusBadge}
+                            <div class="list-card-title" style="margin-top: 4px;">${item.nome}</div>
+                        </div>
+                        <div class="qty-stepper">
+                            <button onclick="alterarQtdDespensa(${item.id}, -1)" title="Consumir 1">−</button>
+                            <span>${qtd}</span>
+                            <button onclick="alterarQtdDespensa(${item.id}, 1)" title="Adicionar 1">+</button>
+                        </div>
+                    </div>
+                    <div class="list-card-details">
+                        <span>Último preço: ${item.ultimoValorUnit > 0 ? formatarMoeda(item.ultimoValorUnit) : 'N/A'}</span>
+                        <div class="action-icon-group">
+                            <button class="btn-repor ${jaNaLista ? 'ja-na-lista' : ''}" onclick="reporItemDespensa(${item.id})">
+                                <i class="fa-solid ${jaNaLista ? 'fa-cart-check' : 'fa-cart-plus'}"></i> ${jaNaLista ? 'Na Lista' : 'Acabou / Repor'}
+                            </button>
+                            <button class="icon-btn delete" onclick="excluirItemDespensa(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.marcarItemComprado = function(id) {
+            let item = appData.itensCasa.find(i => i.id === id);
+            if (!item) return;
+            item.status = 'Comprado';
+            if (item.categoria === 'Mercado') {
+                let qtd = item.quantidade || 1;
+                abastecerDespensa(item.nome, qtd, (parseFloat(item.valorReal) || 0) / qtd);
+            }
+            registrarAtividade(`Comprado: ${item.nome}`);
+            salvarDados();
+        };
 
         window.calcularTotalModalItem = function() {
             let qtd = parseInt(document.getElementById('itemQuantidade').value) || 1;
@@ -1341,23 +1582,27 @@
             let status = document.getElementById('itemStatus').value; 
             let valorUnitario = parseFloat(document.getElementById('itemValorReal').value) || 0; 
             
-            if (!nome || valorUnitario <= 0) { 
+            if (!nome || (status === 'Comprado' && valorUnitario <= 0)) { 
                 alert('Informe o nome e o valor do item.'); 
                 return; 
             }
 
             let valorTotalCalculado = parseFloat((qtd * valorUnitario).toFixed(2));
-            let nomeFinal = qtd > 1 ? `${qtd}x ${nome.replace(/^\d+x\s*/i, '')}` : nome.replace(/^\d+x\s*/i, '');
+            let nomeFinal = qtd > 1 ? `${qtd}x ${limparNomeProduto(nome)}` : limparNomeProduto(nome);
 
             if (editItemCasaId !== null) {
                 let index = appData.itensCasa.findIndex(i => i.id === editItemCasaId);
                 if (index !== -1) {
+                    let statusAnterior = appData.itensCasa[index].status;
                     appData.itensCasa[index].nome = nomeFinal;
                     appData.itensCasa[index].quantidade = qtd;
                     appData.itensCasa[index].categoria = categoria;
                     appData.itensCasa[index].status = status;
                     appData.itensCasa[index].valorReal = valorTotalCalculado;
-                    registrarAtividade(`Edição: ${nomeFinal} — ${formatarMoeda(valorTotalCalculado)}`);
+                    if (categoria === 'Mercado' && status === 'Comprado' && statusAnterior !== 'Comprado') {
+                        abastecerDespensa(nome, qtd, valorUnitario);
+                    }
+                    registrarAtividade(`Edição: ${nomeFinal}`);
                 }
             } else {
                 appData.itensCasa.unshift({ 
@@ -1368,7 +1613,10 @@
                     status, 
                     valorReal: valorTotalCalculado 
                 }); 
-                registrarAtividade(`Compra: ${nomeFinal} — ${formatarMoeda(valorTotalCalculado)}`);
+                if (categoria === 'Mercado' && status === 'Comprado') {
+                    abastecerDespensa(nome, qtd, valorUnitario);
+                }
+                registrarAtividade(`Compra: ${nomeFinal}`);
             }
 
             salvarDados(); 
@@ -1410,7 +1658,7 @@
                 return; 
             }
             appData.contas.push({ id: Date.now(), nome, categoria, valor, vencimento, status, recorrente }); 
-            registrarAtividade(`Conta: ${nome} — ${formatarMoeda(valor)}`);
+            registrarAtividade(`Conta: ${nome}`); 
             salvarDados(); 
             closeModal('modalConta'); 
             document.getElementById('contaNome').value = ''; 
@@ -1430,7 +1678,7 @@
             salvarDados(); 
         };
 
-        // --- ORÇAMENTO POR CATEGORIA (INTEGRADO TOTAL: FINANÇAS + CASA) ---
+        // --- ORÇAMENTO POR CATEGORIA ---
         function renderizarOrcamento() {
             let container = document.getElementById('financasOrcamentoContainer'); 
             container.innerHTML = '';
@@ -1442,7 +1690,6 @@
                 let totalGasto = 0;
 
                 if (catNome === 'Mercado') {
-                    // Soma Mercado da aba Casa (cupom fiscal/compras) + Contas pagas de Mercado em Finanças
                     let gastoCasa = appData.itensCasa
                         .filter(i => i.status === 'Comprado' && i.categoria === 'Mercado')
                         .reduce((acc, i) => acc + (parseFloat(i.valorReal) || 0), 0);
@@ -1451,7 +1698,6 @@
                         .reduce((acc, c) => acc + (parseFloat(c.valor) || 0), 0);
                     totalGasto = gastoCasa + gastoConta;
                 } else if (catNome === 'Casa') {
-                    // Soma Manutenção da aba Casa + Contas pagas de Casa em Finanças
                     let gastoCasa = appData.itensCasa
                         .filter(i => i.status === 'Comprado' && i.categoria === 'Casa')
                         .reduce((acc, i) => acc + (parseFloat(i.valorReal) || 0), 0);
@@ -1460,7 +1706,6 @@
                         .reduce((acc, c) => acc + (parseFloat(c.valor) || 0), 0);
                     totalGasto = gastoCasa + gastoConta;
                 } else {
-                    // Contas Fixas, Lazer e Tecnologia: Puxam exclusivamente de Finanças
                     totalGasto = appData.contas
                         .filter(c => c.status === 'paga' && c.categoria === catNome)
                         .reduce((acc, c) => acc + (parseFloat(c.valor) || 0), 0);
@@ -1584,7 +1829,7 @@
         window.resetarDados = async function() { 
             if (confirm('Tem certeza? Isso apagará os dados do navegador e da nuvem Firebase.')) { 
                 localStorage.removeItem('app_casal_data_v1'); 
-                try { await setDoc(window.docRef, {}); } catch(e) {} 
+                try { if (window.setDocRef) await window.setDocRef(window.docRef, {}); } catch(e) {} 
                 location.reload(); 
             } 
         };
@@ -1613,8 +1858,15 @@
             }); 
         }
 
+        function formatarMoedaBruta(val) {
+            return 'R$ ' + (parseFloat(val) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
         function formatarMoeda(val) { 
-            return 'R$ ' + (parseFloat(val) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
+            if (window.appData && window.appData.modoPrivacidade) {
+                return 'R$ •••••';
+            }
+            return formatarMoedaBruta(val);
         }
 
         window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; };
