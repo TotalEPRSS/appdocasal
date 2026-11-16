@@ -786,7 +786,6 @@
 
         window.salvarDados = async function() {
             window.atualizarInterface();
-            // Não envia darkMode nem modoPrivacidade para a nuvem
             const { darkMode, modoPrivacidade, ...dadosNuvem } = window.appData;
             localStorage.setItem('app_casal_data_v1', JSON.stringify(dadosNuvem));
             try {
@@ -967,7 +966,6 @@
             }
         }
 
-        // Aplica o tema local imediatamente ao carregar a página
         aplicarTemaLocal();
 
         window.atualizarNomeP1 = function(val) { appData.nomeP1 = val; salvarDados(); };
