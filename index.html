@@ -781,15 +781,20 @@
         };
 
         window.salvarDados = async function() {
-            try { await setDoc(window.docRef, window.appData); } catch (e) { console.error("Erro Firebase:", e); }
-            localStorage.setItem('app_casal_data_v1', JSON.stringify(window.appData));
             window.atualizarInterface();
+            localStorage.setItem('app_casal_data_v1', JSON.stringify(window.appData));
+            try {
+                await setDoc(window.docRef, window.appData);
+            } catch (e) {
+                console.error("Erro Firebase:", e);
+            }
         };
 
-        onSnapshot(window.docRef, (docSnap) => {
+        onSnapshot(window.docRef, { includeMetadataChanges: false }, (docSnap) => {
             if (docSnap.exists() && docSnap.data().nomeP1) {
                 window.appData = { ...window.appData, ...docSnap.data() };
                 if (!Array.isArray(window.appData.despensa)) window.appData.despensa = [];
+                localStorage.setItem('app_casal_data_v1', JSON.stringify(window.appData));
             } else {
                 const saved = localStorage.getItem('app_casal_data_v1');
                 if (saved) { try { window.appData = { ...window.appData, ...JSON.parse(saved) }; } catch(e) {} }
@@ -814,7 +819,7 @@
     </script>
 
     <script>
-        // --- CONFIGURAÇÃO PWA (MANIFEST DINÂMICO + SERVICE WORKER) ---
+        // --- CONFIGURAÇÃO PWA (MANIFEST DINÂMICO + LIMPEZA DE CACHE ANTIGO) ---
         let deferredInstallPrompt = null;
 
         (function initPWA() {
@@ -848,24 +853,12 @@
             const linkEl = document.getElementById('pwaManifestLink');
             if (linkEl) linkEl.setAttribute('href', manifestUrl);
 
-            if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
-                const swCode = `
-                    const CACHE_NAME = 'app-casal-v1';
-                    self.addEventListener('install', (e) => {
-                        self.skipWaiting();
-                    });
-                    self.addEventListener('activate', (e) => {
-                        e.waitUntil(clients.claim());
-                    });
-                    self.addEventListener('fetch', (e) => {
-                        e.respondWith(
-                            fetch(e.request).catch(() => caches.match(e.request))
-                        );
-                    });
-                `;
-                const swBlob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(swBlob);
-                navigator.serviceWorker.register(swUrl).catch(() => {});
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then((registrations) => {
+                    for (let reg of registrations) {
+                        reg.unregister();
+                    }
+                });
             }
         })();
 
@@ -1486,7 +1479,6 @@
 
             estoque.forEach(item => {
                 let qtd = parseInt(item.quantidade) || 0;
-                let acabando = qtd <= 1;
                 let jaNaLista = appData.itensCasa.some(i => i.status === 'Pendente' && limparNomeProduto(i.nome).toUpperCase() === item.nome.toUpperCase());
 
                 let statusBadge = qtd === 0
